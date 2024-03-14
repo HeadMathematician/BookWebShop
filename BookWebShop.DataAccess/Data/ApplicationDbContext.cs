@@ -12,7 +12,7 @@ namespace BookWebShop.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
-
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasData(
@@ -33,7 +33,7 @@ namespace BookWebShop.Data
                     Id = 3,
                     Name = "Thriller",
                     DisplayOrder = 3,
-                });
+                });                                 
         }
     }
 }
