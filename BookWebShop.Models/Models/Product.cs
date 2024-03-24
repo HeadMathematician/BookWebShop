@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
+using BookWebShop.Models.Models.CustomErrors;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookWebShop.Models.Models
 {
@@ -12,10 +11,14 @@ namespace BookWebShop.Models.Models
         public string? Name { get; set; }
         public string? Author { get; set; }
         public string? Description { get; set; }
+        [DisplayName("Publish Date")]
         public DateTime PublishDate { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
+        [ValidateNever]
+        [DisplayName("")]
         public string? Image { get; set; }
+        public Category? Category { get; set; }
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
     }
 }

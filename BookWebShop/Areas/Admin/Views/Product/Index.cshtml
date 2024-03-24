@@ -14,7 +14,7 @@
             </h3>
         </div>
         <div class="col-4 d-flex justify-content-end">
-            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
                 Add new
             </a>
         </div>
@@ -42,7 +42,7 @@
                         }
                         else
                         {
-                            <img src=" alt="Book image" />
+                            <img src="" alt="Book image" />
                         }
                     }
                 </div>
@@ -65,15 +65,16 @@
                     </div>                                    
                 </div>
             </div>
-            <div style="height:13.5em; width:15.5em;" class="d-flex align-items-center flex-column">
-                <div>
-
+            <div style="width:15.5em;" class="d-flex align-items-center flex-column">
+                <div style="height:19em">
                     <p>@product.Description</p>
                 </div>
-
+                <div>
+                    <a asp-controller="Product" asp-action="Upsert" asp-route-productId="@product.Id">Edit</a>
+                    <a asp-controller="Product" asp-action="Delete" asp-route-productId="@product.Id">Delete</a>
+                </div>
             </div>
-        </div>
-        
+        </div>      
     }
 </div>
 

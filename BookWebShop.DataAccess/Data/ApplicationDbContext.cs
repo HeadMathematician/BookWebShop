@@ -7,7 +7,7 @@ namespace BookWebShop.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -33,7 +33,7 @@ namespace BookWebShop.Data
                     Id = 3,
                     Name = "Thriller",
                     DisplayOrder = 3,
-                });                                 
+                });
         }
     }
 }

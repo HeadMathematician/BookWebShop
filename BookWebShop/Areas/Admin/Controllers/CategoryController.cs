@@ -1,11 +1,8 @@
-﻿using BookWebShop.Data;
-using BookWebShop.DataAccess.Repository;
-using BookWebShop.DataAccess.Repository.IRepository;
+﻿using BookWebShop.DataAccess.Repository.IRepository;
 using BookWebShop.Models.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookWebShop.Controllers
+namespace BookWebShop.Areas.Admin.Controllers
 {
 
     public class CategoryController : Controller
@@ -22,7 +19,7 @@ namespace BookWebShop.Controllers
 
         public CategoryController(IUnitOfWork unitOfWork)
         {
-           _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         //public IActionResult Index()
@@ -44,7 +41,7 @@ namespace BookWebShop.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Add(category);
                 _unitOfWork.Save();
@@ -64,7 +61,7 @@ namespace BookWebShop.Controllers
 
         public IActionResult Edit(int categoryId)
         {
-            if(categoryId == 0)
+            if (categoryId == 0)
             {
                 return NotFound();
             }
