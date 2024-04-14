@@ -13,6 +13,7 @@ namespace BookWebShop.Models.Models
         public string? Description { get; set; }
         [DisplayName("Publish Date")]
         public DateTime PublishDate { get; set; }
+        [Range(1D, 1000D)]
         public double Price { get; set; }
         [ValidateNever]
         [DisplayName("")]

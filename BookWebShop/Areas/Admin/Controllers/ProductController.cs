@@ -77,7 +77,7 @@ namespace BookWebShop.Areas.Admin.Controllers
                         productViewModel.Product.Image = Convert.ToBase64String(imageBytes);
                     }
                     _unitOfWork.Product.Add(productViewModel.Product);
-                   TempData["success"] = "Product created successfully";
+                    TempData["success"] = "Product created successfully";
                 }
                 else
                 {
@@ -104,36 +104,68 @@ namespace BookWebShop.Areas.Admin.Controllers
                 return View(productViewModel);
             }
         }
+        
 
-        public IActionResult Delete(int productId)
+        //public IActionResult Delete(int productId)
+        //{
+        //    if (productId == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    Product product = _unitOfWork.Product.Get(x => x.Id == productId);
+
+
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(product);
+        //}
+
+        //[HttpPost]
+        //public IActionResult Delete(Product product)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Product.Delete(product);
+        //        _unitOfWork.Save();
+        //        TempData["success"] = "Product edited successfully";
+        //        return Redirect("index");
+        //    }
+        //    return View();
+        //}
+
+
+
+        #region API Calls
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            if (productId == 0)
-            {
-                return NotFound();
-            }
-
-            Product product = _unitOfWork.Product.Get(x => x.Id == productId);
-
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
+            List<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = productList });
         }
 
-        [HttpPost]
-        public IActionResult Delete(Product product)
+        [HttpDelete]
+        public IActionResult Delete(int? id)
         {
-            if (ModelState.IsValid)
+            var product = _unitOfWork.Product.Get(x => x.Id == id);
+
+            if(product == null)
             {
-                _unitOfWork.Product.Delete(product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product edited successfully";
-                return Redirect("index");
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            return View();
-        }     
+
+
+            _unitOfWork.Product.Delete(product);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Delete successful" });
+            
+        }
+
+        #endregion
+
     }
 }

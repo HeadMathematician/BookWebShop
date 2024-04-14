@@ -1,0 +1,40 @@
+﻿@model List<Company>
+
+
+<div class="container">
+    <a asp-controller="Company" asp-action="Upsert">
+        Create
+    </a>
+    <table id="tblData2" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Street Address
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    Postal code
+                </th>
+                <th>
+                    Phone number
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/company.js"></script>
+
+}
