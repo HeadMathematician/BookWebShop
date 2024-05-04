@@ -34,6 +34,9 @@
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
                         </li>
                         <li>
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">Cart</a>
+                        </li>
+                        <li>
                             <div class="dropdown">
                                 <button class="dropdown-toggle management-dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Management
@@ -45,8 +48,9 @@
                                 </ul>
                             </div>                         
                         </li>
-                        
                     </ul>
+                     <partial name="_LoginPartial" /> 
+
                 </div>
             </div>
         </nav>

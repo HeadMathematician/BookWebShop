@@ -1,12 +1,13 @@
-﻿@model Product
+﻿@model ShoppingCart
 
 <form method="post">
+    <input hidden asp-for="Id" />
     <div class="card shadow border-0 mt-4">
         <div class="card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.Name</h3>
-                    <p class="text-white-50 fw-semibold mb-0">by @Model.Author</p>
+                    <h3 class="text-white text-uppercase">@Model.Product.Name</h3>
+                    <p class="text-white-50 fw-semibold mb-0">by @Model.Product.Author</p>
                 </div>
             </div>
         </div>
@@ -49,12 +50,12 @@
                                 <div>Price</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>Price: @Model.Price</div>
+                                <div>Price: @Model.Product.Price</div>
                             </div>
                             </div>
                         </div>
                         <div class="row pl-2 my-3">
-                            <p class="text-secondary lh-sm">@Model.Description</p>
+                            <p class="text-secondary lh-sm">@Model.Product.Description</p>
                         </div>
                         <div class="row pl-2 mb-3">
                             <div class="col-md-4">
@@ -63,7 +64,7 @@
                                           id="inputGroup-sizing-default">
                                         Count
                                     </span>
-                                    <input type="number" value="1" class="form-control text-end"
+                                    <input asp-for="Count" type="number" value="1" class="form-control text-end"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 
                                 </div>
@@ -71,14 +72,10 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 pb-1">
-                                <button type="submit" disabled
-                                        class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                                    Add to Cart (Comming Soon...)
-                                </button>
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

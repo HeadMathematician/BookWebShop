@@ -14,7 +14,6 @@ namespace BookWebShop.DataAccess.Repository
         {
             _context = context;
             dbSet = _context.Set<T>();
-
         }
         public void Add(T entity)
         {
@@ -47,18 +46,27 @@ namespace BookWebShop.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
 
-            if (!string.IsNullOrEmpty(includeProperties))
+            if (filter != null)
             {
-                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(property);
-                }
+                query = dbSet.Where(filter);
+                return query.ToList();
             }
-            return query.ToList();
+            else
+            {
+                query = dbSet;
+                if (!string.IsNullOrEmpty(includeProperties))
+                {
+                    foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(property);
+                    }
+                }
+                return query.ToList();
+            }          
         }
     }
 }

@@ -4,9 +4,14 @@ using BookWebShop.Models.Models;
 using BookWebShop.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using BookWebShop.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookWebShop.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = Role.Role_Admin)]
+
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
