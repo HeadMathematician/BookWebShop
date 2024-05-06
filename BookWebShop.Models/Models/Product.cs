@@ -18,6 +18,7 @@ namespace BookWebShop.Models.Models
         [ValidateNever]
         [DisplayName("")]
         public string? Image { get; set; }
+        public string? ISBN { get; set; }
         public Category? Category { get; set; }
         [DisplayName("Category")]
         public int CategoryId { get; set; }

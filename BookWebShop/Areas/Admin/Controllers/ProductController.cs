@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using System.Drawing.Imaging;
+using System.Drawing;
+
 
 namespace BookWebShop.Areas.Admin.Controllers
 {
@@ -71,7 +74,19 @@ namespace BookWebShop.Areas.Admin.Controllers
                     using (var memoryStream = new MemoryStream())
                     {
                         stream.CopyTo(memoryStream);
-                        imageBytes = memoryStream.ToArray();
+
+                        if (memoryStream.Length > 60 * 1024) 
+                        {
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            using (var resizedStream = ResizeImage(memoryStream, 60 * 1024)) 
+                            {
+                                imageBytes = resizedStream.ToArray();
+                            }
+                        }
+                        else
+                        {
+                            imageBytes = memoryStream.ToArray();
+                        }
                     }
                 }
 
@@ -109,39 +124,58 @@ namespace BookWebShop.Areas.Admin.Controllers
                 return View(productViewModel);
             }
         }
-        
 
-        //public IActionResult Delete(int productId)
-        //{
-        //    if (productId == 0)
-        //    {
-        //        return NotFound();
-        //    }
+        private MemoryStream ResizeImage(MemoryStream originalImageStream, int maxSize)
+        {
+            using (Image originalImage = Image.FromStream(originalImageStream))
+            {
+                int quality = 100;
+                var jpgEncoder = GetEncoder(System.Drawing.Imaging.ImageFormat.Jpeg);
+                var encoder = System.Drawing.Imaging.Encoder.Quality;
+                var qualityEncoderParameters = new EncoderParameters(1);
 
-        //    Product product = _unitOfWork.Product.Get(x => x.Id == productId);
+                // Get image quality
+                var qualityEncoder = System.Drawing.Imaging.Encoder.Quality;
+                qualityEncoderParameters.Param[0] = new EncoderParameter(encoder, quality);
 
+                while (true)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        originalImage.Save(ms, jpgEncoder, qualityEncoderParameters);
+                        int size = (int)(ms.Length / 1024); 
+                        if (size <= maxSize)
+                        {
+                            return ms;
+                        }
+                        else
+                        {
+                            quality -= 10;
+                            if (quality < 10)
+                            {
+                                originalImageStream.Seek(0, SeekOrigin.Begin);
+                                return originalImageStream;
+                            }
+                            qualityEncoderParameters.Param[0] = new EncoderParameter(encoder, quality);
+                        }
+                    }
+                }
+            }
+        }
 
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
+        private ImageCodecInfo GetEncoder(System.Drawing.Imaging.ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
 
-        //    return View(product);
-        //}
-
-        //[HttpPost]
-        //public IActionResult Delete(Product product)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Product.Delete(product);
-        //        _unitOfWork.Save();
-        //        TempData["success"] = "Product edited successfully";
-        //        return Redirect("index");
-        //    }
-        //    return View();
-        //}
-
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
 
 
         #region API Calls

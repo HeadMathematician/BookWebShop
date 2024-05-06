@@ -22,3 +22,25 @@ body {
   padding:0;
   margin:0;
 }
+
+
+.details-btn {
+    background-color: #03584f !important;
+    color: white !important;
+}
+
+    .details-btn:hover {
+        background-color: #004D40 !important;
+        color: white !important;
+    }
+
+.action-btn {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #03584f !important;
+}
+
+    .action-btn:hover {
+        background-color: #03584f !important;
+        color:white !important;
+    }

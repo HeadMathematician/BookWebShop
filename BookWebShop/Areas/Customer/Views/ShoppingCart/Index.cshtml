@@ -2,7 +2,7 @@
 <form method="post">
     <br />
     <div class="card shadow border-0">
-        <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
+        <div class="card-header text-light ml-0 py-4" style="background-color:#3b3760 !important">
             <div class="row px-4">
                 <div class="col-6">
                     <h5 class="pt-2 text-light">
@@ -11,19 +11,32 @@
                 </div>
             </div>
         </div>
-        @foreach(var item in Model.ShoppingCartList)
-        {
-            <div class="card-body my-4">
-                <div class="row">
+        
+        <div class="card-body my-4">
+            <div class="row">
+            </div>
+            <div class="row mb-3 pb-3">
+                <div class="col-md-2 offset-md-1">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn action-btn text-uppercase mb-5 btn-sm">
+                        <small>Continue Shopping</small>
+                    </a>
                 </div>
-                <div class="row mb-3 pb-3">
-                    <div class="col-md-2 offset-md-1">
-                        <a href="#" class="btn btn-outline-primary text-uppercase mb-5 btn-sm"><small>Continue Shopping</small></a>
-                    </div>
+                @foreach (var item in Model.ShoppingCartList)
+                {
                     <div class="col-md-10 offset-md-1">
                         <div class="row border-bottom pb-3">
                             <div class="d-none d-lg-block col-lg-1 text-center py-2">
-                                <img src="https://placehold.co/600x400" class="rounded" width="100%" />
+                                @if (item.Product.Image != null)
+                                {
+                                    var imreBase64Data = item.Product.Image;
+                                    byte[] bytes = Convert.FromBase64String(imreBase64Data);
+                                    var image = "data:image/png;base64," + Convert.ToBase64String(bytes, 0, bytes.Length);
+                                    <img src="@image" class="rounded" width="100%" />
+                                }
+                                else
+                                {
+                                    <img src="https://fakeimg.pl/700x500/F8F8F8/080808?text=No+image&font=noto-serif" class="card-img-top rounded" style="width:10rem; height:200px" />
+                                }
                             </div>
                             <div class="col-12 col-lg-6 pt-md-3">
                                 <h5 class="text-uppercase text-secondary"><strong>@item.Product.Name</strong></h5>
@@ -38,44 +51,42 @@
                                 </div>
                                 <div class="col-6 col-sm-4 col-lg-6 pt-2">
                                     <div class="w-75 btn-group" role="group">
-                                        <a class="btn btn-outline-primary bg-gradient py-2">
-                                            <i class="bi bi-plus-square"></i>
+                                        <a asp-action="IncreaseCount" asp-controller="ShoppingCart" asp-route-itemId="@item.Id" class="btn action-btn py-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         </a> &nbsp;
-                                        <a class="btn btn-outline-primary bg-gradient py-2">
-                                            <i class="bi bi-dash-square"></i>
+                                        <a asp-action="DecreaseCount" asp-controller="ShoppingCart" asp-route-itemId="@item.Id" class="btn action-btn py-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         </a>
                                     </div>
 
                                 </div>
                                 <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-                                    <a href="#" class="btn btn-danger bg-gradient py-2 ">
-                                        <i class="bi bi-trash-fill"></i>
+                                    <a asp-action="DeleteCart" asp-controller="ShoppingCart" asp-route-itemid="@item.Id" class="btn btn-danger bg-gradient py-2 ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="bevel"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="card-footer bg-white border-0">
-                    <div class="row">
-                        <div class="col-md-4 offset-md-4">
-                            <ul class="list-group mb-4">
-                                <li class="d-flex justify-content-between align-items-center">
-                                    <h5 class="text-dark fw-semibold text-uppercase"> Total (USD)</h5>
-                                    <h4 class="text-dark fw-bolder">(@item.Product.Price * @item.Count)$$</h4>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2 offset-md-5">
-                            <a href="#" class="btn btn-primary border-0 bg-gradient w-100 py-2">Summary</a>
-                        </div>
-                    </div>
+                    </div>        
+                }
+            </div>
+        </div>
+        <div class="card-footer bg-white border-0">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <ul class="list-group mb-4">
+                        <li class="d-flex justify-content-between align-items-center">
+                            <h5 class="text-dark fw-semibold text-uppercase"> Total (USD)</h5>
+                            <h4 class="text-dark fw-bolder">@((Model.OrderTotal).ToString("0.00"))$$</h4>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        }      
-              
+            <div class="row">
+                <div class="col-md-2 offset-md-5">
+                    <a asp-action="Summary" asp-controller="ShoppingCart" class="btn details-btn border-0 bg-gradient w-100 py-2">Summary</a>
+                </div>
+            </div>
+        </div>
     </div>
 </form>

@@ -34,14 +34,26 @@ namespace BookWebShop.Areas.Customer.Controllers
         {
             Product product = _unitOfWork.Product.Get(x => x.Id == productId);
             var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            ShoppingCart shoppingCart = new ShoppingCart()
+            if (claimsIdentity != null && claimsIdentity.IsAuthenticated)
             {
-                Product = product,
-                ApplicationUserId = userId,
-            };
-            return View(shoppingCart);
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                ShoppingCart shoppingCart = new ShoppingCart()
+                {
+                    Product = product,
+                    ApplicationUserId = userId,
+                };
+
+                string categoryName = _unitOfWork.Category.Get(x => x.Id == product.CategoryId).Name;
+
+                ViewBag.CategoryName = categoryName;
+
+                return View(shoppingCart);
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Register");
+            }
         }
 
         [HttpPost]
