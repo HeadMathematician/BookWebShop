@@ -44,3 +44,14 @@ body {
         background-color: #03584f !important;
         color:white !important;
     }
+
+.manage-profile-link{
+    color: black !important;
+    background-color:white !important;
+    border: 1px solid #03584f !important;
+}
+
+.manage-profile-link:active{
+    background-color: #03584f !important;
+    color: white !important;
+}
