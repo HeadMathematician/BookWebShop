@@ -280,9 +280,6 @@ namespace BookWebShop.Areas.Customer.Controllers
 				var service = new SessionService();
 				Session session = service.Create(options);
 
-                var nest2o = orderHeader;
-
-
                 _unitOfWork.OrderHeader.UpdateStripePaymentId(orderHeader.Id, session.Id, session.PaymentIntentId);
 				_unitOfWork.Save();
 

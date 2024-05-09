@@ -48,10 +48,31 @@ body {
 .manage-profile-link{
     color: black !important;
     background-color:white !important;
-    border: 1px solid #03584f !important;
+    /*border: 1px solid #03584f !important;*/
 }
 
-.manage-profile-link:active{
+.manage-profile-link.active{
     background-color: #03584f !important;
     color: white !important;
+}
+
+.action-btn-delete{
+    background-color:white !important;
+    color: red !important;
+    border: 1px solid red;
+}
+
+.action-btn-delete:hover{
+    background-color:red !important;
+    color: white !important;
+}
+
+.custom-select {
+    background-color: #03584f !important;
+    color: white;
+    border-radius: 6px;
+    height: 2rem;
+    font-size: 0.9rem;
+    /* border: 1px solid white !important; */
+    padding: 0.25rem;
 }

@@ -1,41 +1,36 @@
 ﻿@model IEnumerable<Product>
 
-<div class="row pb-3">
-    @foreach(var product in Model)
-    {
-        <div class="col-lg-3 col-sm-6">
-            <div class="row p-2">
-                <div class="col-12 p-1">
-                    <div class="card border-0 p-3 shadow border-top border-5 rounded d-flex align-items-center">
-                        @if (product.Image != null)
-                        {
-                            var imreBase64Data = product.Image;
-                            byte[] bytes = Convert.FromBase64String(imreBase64Data);
-                            var image = "data:image/png;base64," + Convert.ToBase64String(bytes, 0, bytes.Length);
-                            <img src="@image" class="product-image" style="height:200px; width:50%" />
-                        }
-                        else
-                        {
-                            <img src="https://fakeimg.pl/700x500/F8F8F8/080808?text=No+image&font=noto-serif" class="card-img-top rounded" style="width:10rem; height:200px" />
-                        }
-                        <div class="card-body pb-0">
-                            <div class="pl-1">
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center" style="font-size:1rem;">@product.Name</p>
-                                <p class="card-title text-warning text-center">@product.Author</p>
-                            </div>
-                            <div class="card-title h5 text-dark opacity-75 text-uppercase text-center">
-                                Price:
-                                <span class="h6">
-                                    @product.Price.ToString("c")
-                                </span>
-                            </div>
-                        </div>
-                        <div>
-                            <a asp-controller="Home" asp-action="Details" asp-route-productId="@product.Id" class="btn details-btn">Details</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }   
+<div class="d-flex gap-2">
+    <div class="flex-grow-1 px-3">
+        <h5 class="mt-2">Filter by category</h5>
+        <select id="filterSelect" class="w-100 custom-select">
+            <option value="0">All</option>
+            @foreach(var category in ViewBag.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+    </div>
+    @await Html.PartialAsync("_ProductsPartial", Model)
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#filterSelect').change(function () {
+            var categoryId = $(this).val();
+            $.ajax({
+                url: '@Url.Action("GetProductsByCategory", "Home")',
+                type: 'GET',
+                dataType: 'html',
+                data: { categoryId: categoryId },
+                success: function (data) {
+                    $('#productsList').html(data);
+                },
+                error: function () {
+                    console.log('Error occurred while fetching products.');
+                }
+            });
+        });
+    });
+</script>

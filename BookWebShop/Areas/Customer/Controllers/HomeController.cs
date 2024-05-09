@@ -21,7 +21,24 @@ namespace BookWebShop.Areas.Customer.Controllers
         public IActionResult Index()
         {
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            List<Category> categories = _unitOfWork.Category.GetAll().ToList();
+            ViewBag.Categories = categories;
             return View(productList);
+        }
+
+        public ActionResult GetProductsByCategory(int categoryId)
+        {
+            List<Product> products;
+            if (categoryId == 0)
+            {
+                products = _unitOfWork.Product.GetAll().ToList();
+            }
+            else
+            {
+                products = _unitOfWork.Product.GetAll(p => p.CategoryId == categoryId).ToList();
+            }
+
+            return PartialView("_ProductsPartial", products);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

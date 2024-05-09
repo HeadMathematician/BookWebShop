@@ -1,0 +1,45 @@
+﻿@model List<Product>
+
+<div id="productsList" class="row pb-3 flex-wrap" style="width:calc(100vw - 15rem) !important;">
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded d-flex align-items-center">
+                        @if (product.Image != null)
+                        {
+                            var imreBase64Data = product.Image;
+                            byte[] bytes = Convert.FromBase64String(imreBase64Data);
+                            var image = "data:image/png;base64," + Convert.ToBase64String(bytes, 0, bytes.Length);
+                            <img src="@image" class="product-image" style="height:200px; width:50%" />
+                        }
+                        else
+                        {
+                            <img src="https://fakeimg.pl/700x500/F8F8F8/080808?text=No+image&font=noto-serif" class="card-img-top rounded" style="width:10rem; height:200px" />
+                        }
+                        <div class="card-body pb-0">
+                            <div class="pl-1">
+                                @if (product.Name != null)
+                                {
+                                    var title = product.Name.Length > 25 ? product.Name.Substring(0, 24) + "..." : product.Name;
+                                    <p class="card-title h5 text-dark opacity-75 text-uppercase text-center" style="font-size:1rem;">@title</p>
+                                }
+                                <p class="card-title text-warning text-center">@product.Author</p>
+                            </div>
+                            <div class="card-title h5 text-dark opacity-75 text-uppercase text-center">
+                                Price:
+                                <span class="h6">
+                                    @product.Price.ToString("c")
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-controller="Home" asp-action="Details" asp-route-productId="@product.Id" class="btn details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
